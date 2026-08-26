@@ -1,0 +1,23 @@
+services:
+  bearer-token-api-proxy:
+    image: bearer-token-api-proxy:latest
+    container_name: bearer-token-api-proxy
+    restart: unless-stopped
+
+    ports:
+      - "8787:8787"
+
+    volumes:
+      - ./config/proxy.env:/app/config/proxy.env:ro
+      - ./config/proxy.json:/app/config/proxy.json:ro
+      - ./certs:/app/certs:ro
+
+    read_only: true
+    tmpfs:
+      - /tmp
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+
+    stop_grace_period: 15s
